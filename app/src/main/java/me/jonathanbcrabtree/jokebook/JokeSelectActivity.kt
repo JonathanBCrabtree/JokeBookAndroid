@@ -1,6 +1,5 @@
 package me.jonathanbcrabtree.jokebook
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,7 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import me.jonathanbcrabtree.jokebook.ui.theme.JokeBookTheme
@@ -42,7 +41,7 @@ class JokeSelectActivity : ComponentActivity() {
 
                     if (joke == null) {
                         Column(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxSize().padding(12.dp),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
@@ -56,14 +55,17 @@ class JokeSelectActivity : ComponentActivity() {
                             ChooseJokesButton("Programming", "programming")
                             Spacer(modifier = Modifier.height(25.dp))
 
-                            LazyColumn {
+                            LazyColumn(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
                                 items(viewModel.jokes) { joke ->
                                     val onClick = {
                                         viewModel.selectedJoke.value = joke
                                     }
 
                                     Button(onClick = onClick) {
-                                        Text(joke.setup)
+                                        Text(text = joke.setup,
+                                            textAlign = TextAlign.Center)
                                     }
                                 }
                             }
@@ -75,17 +77,19 @@ class JokeSelectActivity : ComponentActivity() {
                     } else {
 
                         Column(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxSize().padding(12.dp),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
                                 text = joke.setup,
-                                modifier = Modifier.padding(innerPadding)
+                                modifier = Modifier.padding(innerPadding),
+                                textAlign = TextAlign.Center
                             )
 
                             if (viewModel.punchlineRequested.value) {
-                                Text(text = joke.punchline)
+                                Text(text = joke.punchline,
+                                    textAlign = TextAlign.Center)
                             } else {
                                 Button({viewModel.punchlineRequested.value = true}) {
                                     Text(text = "Answer")
